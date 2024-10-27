@@ -16,7 +16,10 @@ connectDB();
 const PORT = process.env.PORT || 5000;
 app.use(express.json());
 
-
+if (process.env.NODE_ENV !== "production") {
+  const cors = require("cors");
+  app.use(cors());
+}
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
@@ -29,7 +32,7 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"));
   });
 } else {
-  appp.get("/", (req, res) => {
+  app.get("/", (req, res) => {
     res.send("API running successfully");
   });
 }
@@ -43,7 +46,12 @@ const server = app.listen(
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:3000",
+    origin:
+      process.env.NODE_ENV === "production"
+        ? "*" // Replace with your actual Render URL
+        : "http://localhost:3000",
+    credentials: true,
+    methods: ["GET", "POST"],
   },
 });
 io.on("connection", (socket) => {
