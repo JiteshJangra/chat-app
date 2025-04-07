@@ -20,6 +20,9 @@ if (process.env.NODE_ENV !== "production") {
   const cors = require("cors");
   app.use(cors());
 }
+app.get("/", (req, res) => {
+  res.send("API running successfully");
+});
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
@@ -49,7 +52,7 @@ const io = require("socket.io")(server, {
     origin:
       process.env.NODE_ENV === "production"
         ? "*" // Replace with your actual Render URL
-        : "http://localhost:3000",
+        : "http://localhost:2000",
     credentials: true,
     methods: ["GET", "POST"],
   },
