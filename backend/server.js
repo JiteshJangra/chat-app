@@ -20,9 +20,7 @@ if (process.env.NODE_ENV !== "production") {
   const cors = require("cors");
   app.use(cors());
 }
-app.get("/", (req, res) => {
-  res.send("API running successfully");
-});
+
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
